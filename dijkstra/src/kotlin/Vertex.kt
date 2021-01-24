@@ -3,7 +3,7 @@ package main.kotlin.dijkstra
 class Vertex internal constructor(_id: String) {
 
     internal val id: String = _id
-    private val edgeMap = HashMap<String, Int>()
+    private val edgeMap: HashMap<String, Int> = HashMap()
 
     internal fun addEdge(vertexId: String, weight: Int) {
         edgeMap[vertexId] = weight

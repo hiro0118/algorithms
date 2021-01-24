@@ -1,9 +1,10 @@
 package main.kotlin.dijkstra
 
 fun dijkstra(graph: Graph, sourceId: String, targetId: String): List<String> {
+    val graphState = GraphState(graph, sourceId, targetId)
 
-    val graphState = initialize(graph, sourceId, targetId)
-
+    // 1. Set the source vertex.
+    graphState.getVertexInfo(sourceId).updateDist(0, null)
     println(graphState)
 
     while (graphState.getUnvisitedVertexInfoMap().isNotEmpty()) {
@@ -28,13 +29,7 @@ fun dijkstra(graph: Graph, sourceId: String, targetId: String): List<String> {
         println(graphState)
     }
     // 4. Get the result.
-    return getResult(graphState.getVertexInfo(sourceId), graphState.getVertexInfo(targetId))
-}
-
-fun initialize(graph: Graph, sourceId: String, targetId: String): GraphState {
-    val graphState = GraphState(graph, sourceId, targetId)
-    graphState.getVertexInfo(sourceId).updateDist(0, null)
-    return graphState
+    return getResult(graphState, sourceId, targetId)
 }
 
 private fun findMinVertex(unvisitedVertexInfoMap: Map<String, GraphState.VertexInfo>): GraphState.VertexInfo {
@@ -51,7 +46,10 @@ private fun findMinVertex(unvisitedVertexInfoMap: Map<String, GraphState.VertexI
     return minVertexInfo!!
 }
 
-private fun getResult(source: GraphState.VertexInfo, target: GraphState.VertexInfo): List<String> {
+private fun getResult(graphState: GraphState, sourceId: String, targetId: String): List<String> {
+    val source = graphState.getVertexInfo(sourceId)
+    val target = graphState.getVertexInfo(targetId)
+
     val result = ArrayList<String>()
     result.add(target.vertex.id)
     var currentVertexInfo = target
